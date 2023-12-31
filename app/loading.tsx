@@ -2,11 +2,9 @@ import Image from "next/image";
 
 function Loading() {
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
-    >
+    <div className="d-flex justify-content-center align-items-center vh-100">
       <Image
+        className="img-fluid"
         width={150}
         height={150}
         alt="loading"
