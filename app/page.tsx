@@ -1,95 +1,64 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from "next/image";
+import styles from "./page.module.css";
+import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const fetchData = await fetch(
+    "https://moviesapi.ir/api/v1/movies?page={page}",
+    {
+      cache: "no-store",
+    }
+  );
+  const data = await fetchData.json();
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <article className="py-5">
+      <div className="container">
+        <div className="row row-cols-1 row-cols-md-3 g-4">
+          {data.data.map((mov: Record<string, any>, i: Record<string, any>) => (
+            <div className="col">
+              <div className="card h-100">
+                <Link href={`/movies/${mov.id}`}>
+                  <Image
+                    width={414}
+                    height={414}
+                    className="card-img-top img-card-content"
+                    src={mov.poster}
+                    alt={mov.title}
+                    priority={true}
+                  />
+                </Link>
+                <div className="card-body">
+                  <h5 className="card-title">
+                    <Link
+                      href={`/movies/${mov.id}`}
+                      className="text-decoration-none"
+                    >
+                      {mov.title}
+                    </Link>
+                  </h5>
+                  <p className="card-text">
+                    This is a longer card with supporting text below as a
+                    natural lead-in to additional content. This content is a
+                    little bit longer.
+                  </p>
+                </div>
+                <div className="card-footer">
+                  <div className="row">
+                    <div className="col">
+                      <small className="text-body-secondary">{mov.year}</small>
+                    </div>
+                    <div className="col">
+                      <small className="text-body-secondary float-end">
+                        {mov.country}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </article>
+  );
 }
