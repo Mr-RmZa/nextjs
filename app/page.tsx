@@ -13,8 +13,11 @@ export default async function Home() {
   const data = await fetchData.json();
   return (
     <article className="py-5">
+      <>
+      <meta name="theme-color" content="#212529"></meta>
+      </>
       <div className="container">
-        <div className="row row-cols-1 row-cols-md-3 g-4">
+        <div className="row row-cols-1 row-cols-md-4 g-4">
           {data.data.map(
             (mov: Record<string, any>, i: Key | null | undefined) => (
               <div className="col" key={i}>
